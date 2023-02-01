@@ -2,7 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import Logo from "../assets/argentBankLogo.png";
 import { FaUserCircle } from "react-icons/fa";
-import "../style/header.css";
+import "../style/Header.css";
 
 const Header = () => {
   return (

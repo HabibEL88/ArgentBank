@@ -1,5 +1,9 @@
 import React from "react";
 import Header from "../components/Header";
+import Card from "../components/Card";
+import Chat from "../assets/icon-chat.png";
+import Money from "../assets/icon-money.png";
+import Security from "../assets/icon-security.png";
 import Footer from "../components/Footer";
 import "../style/Home.css";
 
@@ -19,6 +23,26 @@ const Home = () => {
             </p>
           </section>
         </div>
+        <section className="features">
+          <h2 class="sr-only">Features</h2>
+          <Card
+            icon={Chat}
+            title="You are our #1 priority"
+            text="Need to talk to a
+          representative? You can get in touch through our 24/7 chat or through
+          a phone call in less than 5 minutes."
+          />
+          <Card
+            icon={Money}
+            title="More savings means higher rates"
+            text="The more you save with us, the higher your interest rate will be!"
+          />
+          <Card
+            icon={Security}
+            title="Security you can trust"
+            text="We use top of the line encryption to make sure your data and money is always safe."
+          />
+        </section>
       </main>
       <Footer />
     </React.Fragment>
