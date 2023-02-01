@@ -1,6 +1,7 @@
 import React from "react";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
+import "../style/Home.css";
 
 const Home = () => {
   return (
@@ -8,7 +9,7 @@ const Home = () => {
       <Header />
       <main className="home">
         <div className="hero">
-          <section className="content">
+          <section className="hero-content">
             <h2 className="sr-only">Promoted Content</h2>
             <p className="subtitle">No fees.</p>
             <p className="subtitle">No minimum deposit.</p>
