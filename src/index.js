@@ -4,25 +4,40 @@ import "./index.css";
 import reportWebVitals from "./reportWebVitals";
 
 import Home from "./pages/Home";
-/*
-import Signin from "./pages/SignIn";
-import User from "./pages/User";*/
+import SignIn from "./pages/SignIn";
 
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import Header from "./components/Header";
+import Footer from "./components/Footer";
+
+import { createBrowserRouter, RouterProvider, Outlet } from "react-router-dom";
+
+const Layout = () => (
+  <>
+    <Header />
+    <Outlet />
+    <Footer />
+  </>
+);
 
 const router = createBrowserRouter([
   {
-    path: "/",
-    element: <Home />,
-  },
-  /* {
-    path: "/SignIn",
-    element: <Signin />,
-  },
+    element: <Layout />,
+    children: [
+      {
+        path: "/",
+        element: <Home />,
+      },
+      {
+        path: "/SignIn",
+        element: <SignIn />,
+      },
+      /*
   {
     path: "/User",
     element: <User />,
   },*/
+    ],
+  },
 ]);
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
