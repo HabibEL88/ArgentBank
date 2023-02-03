@@ -1,16 +1,15 @@
 import React from "react";
-import Header from "../components/Header";
+
 import Card from "../components/Card";
 import Chat from "../assets/icon-chat.png";
 import Money from "../assets/icon-money.png";
 import Security from "../assets/icon-security.png";
-import Footer from "../components/Footer";
+
 import "../style/Home.css";
 
 const Home = () => {
   return (
     <React.Fragment>
-      <Header />
       <main className="home">
         <div className="hero">
           <section className="hero-content">
@@ -24,7 +23,7 @@ const Home = () => {
           </section>
         </div>
         <section className="features">
-          <h2 class="sr-only">Features</h2>
+          <h2 className="sr-only">Features</h2>
           <Card
             icon={Chat}
             title="You are our #1 priority"
@@ -44,7 +43,6 @@ const Home = () => {
           />
         </section>
       </main>
-      <Footer />
     </React.Fragment>
   );
 };
