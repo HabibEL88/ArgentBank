@@ -3,13 +3,29 @@ import ReactDOM from "react-dom/client";
 import "./index.css";
 import reportWebVitals from "./reportWebVitals";
 
+import { store } from "./features/user/userSlice"
+import { Provider } from 'react-redux'
+
 import Home from "./pages/Home";
 import SignIn from "./pages/SignIn";
+import Profile from "./pages/Profile"
 
 import Header from "./components/Header";
 import Footer from "./components/Footer";
 
+import ProtectedRoutes from "./components/ProtectedRoutes";
+
+import { saveState } from "features/browser/browserStorage";
+
 import { createBrowserRouter, RouterProvider, Outlet } from "react-router-dom";
+
+
+store.subscribe(() => {
+  saveState({
+    user:store.getState().user
+  });
+})
+
 
 const Layout = () => (
   <>
@@ -31,11 +47,15 @@ const router = createBrowserRouter([
         path: "/SignIn",
         element: <SignIn />,
       },
-      /*
-  {
-    path: "/User",
-    element: <User />,
-  },*/
+      {
+        element: <ProtectedRoutes/>,
+        children: [
+          {
+            path: "/profile",
+            element: <Profile/>
+          }
+        ]
+      }
     ],
   },
 ]);
@@ -43,7 +63,9 @@ const router = createBrowserRouter([
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
-    <RouterProvider router={router} />
+    <Provider store={store}>
+      <RouterProvider router={router} />
+    </Provider>
   </React.StrictMode>
 );
 
