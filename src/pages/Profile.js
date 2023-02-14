@@ -7,11 +7,14 @@ import { useNavigate } from "react-router-dom";
 
 import { useSelector, useDispatch } from "react-redux";
 
-import { setUserFirstName, setUserLastName, setLogout } from "../features/user/userSlice";
+import {
+  setUserFirstName,
+  setUserLastName,
+  setLogout,
+} from "../features/user/userSlice";
 
-import { useForm } from 'react-hook-form'
+import { useForm } from "react-hook-form";
 import Account from "components/Account";
-
 
 const User = () => {
   const loginInfos = useSelector((state) => state.user.loginInfos);
@@ -22,44 +25,47 @@ const User = () => {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
 
-  const { register, handleSubmit } = useForm()
+  const { register, handleSubmit } = useForm();
 
   const userData = [
     {
-      title:"Argent Bank Checking (x8349)",
-      balance:"$2,082.79",
-      description : "Available Balance",
+      title: "Argent Bank Checking (x8349)",
+      balance: "$2,082.79",
+      description: "Available Balance",
     },
     {
-      title:"Argent Bank Savings (x6712)",
-      balance:"$10,928.42",
-      description : "Available Balance",
+      title: "Argent Bank Savings (x6712)",
+      balance: "$10,928.42",
+      description: "Available Balance",
     },
     {
-      title:"Argent Bank Credit Card (x8349)",
-      balance:"$184.30",
-      description : "Current Balance",
+      title: "Argent Bank Credit Card (x8349)",
+      balance: "$184.30",
+      description: "Current Balance",
     },
   ];
 
   const accountCard = () => {
-    return( 
-      userData.map((data) => {
-        
-        const title = data.title
-        const balance = data.balance
-        const description = data.description
+    return userData.map((data) => {
+      const title = data.title;
+      const balance = data.balance;
+      const description = data.description;
 
-        return (<Account key={title} title={title} balance={balance}  description={description}></Account>)
-        })       
-  );
-}
-  
+      return (
+        <Account
+          key={title}
+          title={title}
+          balance={balance}
+          description={description}
+        ></Account>
+      );
+    });
+  };
 
   useEffect(() => {
     getUserData();
   }, []);
-  
+
   // Receive user data on first login:
   const getUserData = () => {
     Axios.post("http://localhost:3001/api/v1/user/profile", loginInfos, {
@@ -89,13 +95,13 @@ const User = () => {
 
     setFirstName(name);
     dispatch(setUserFirstName(name));
-    
+
     setLastName(lastname);
     dispatch(setUserLastName(lastname));
 
     updateUser(name, lastname);
     setUpdatingName(!updatingName);
-  }
+  };
 
   const updateUser = (name, lastname) => {
     const user = {
@@ -103,7 +109,7 @@ const User = () => {
       lastName: lastname,
     };
 
-    /* Axios.put("http://localhost:3001/api/v1/user/profile", user, {
+    Axios.put("http://localhost:3001/api/v1/user/profile", user, {
       headers: {
         Authorization: `Bearer ${token}`,
         Accept: "application/json",
@@ -115,38 +121,42 @@ const User = () => {
       })
       .catch(function (error) {
         console.log(error);
-      }); */
-  }
-
+      });
+  };
 
   return (
-  <main className="main bg-dark">
-    <form className="form" onSubmit={handleSubmit(handleChangeUserName)}>
-      <h1>Welcome back<br />{name}</h1>
-      <div className="inputs">
-        <div className="input-wrapper">
-          <input 
-            type="text" 
-            id="username"
-            placeholder="name"
-            {...register('name')}
-            required
-          />
+    <main className="main bg-dark">
+      <form className="form" onSubmit={handleSubmit(handleChangeUserName)}>
+        <h1>
+          Welcome back
+          <br />
+          {name}
+        </h1>
+        <div className="inputs">
+          <div className="input-wrapper">
+            <input
+              type="text"
+              id="username"
+              placeholder="name"
+              {...register("name")}
+              required
+            />
+          </div>
+          <div className="input-wrapper">
+            <input
+              type="text"
+              id="lastname"
+              placeholder="lastname"
+              {...register("lastname")}
+              required
+            />
+          </div>
         </div>
-        <div className="input-wrapper">
-          <input
-            type="text"
-            id="lastname"
-            placeholder="lastname"
-            {...register('lastname')}
-            required
-          />
-        </div>
-      </div>
-      <button className="sign-in-button profile">Edit Name</button>
-    </form>
-    {accountCard()}
-  </main>);
+        <button className="sign-in-button profile">Edit Name</button>
+      </form>
+      {accountCard()}
+    </main>
+  );
 };
 
 export default User;
