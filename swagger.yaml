@@ -131,9 +131,6 @@ definitions:
       id:
         type: integer
         description: The unique identifier for the transaction.
-      userId:
-        type: integer
-        description: The user ID associated with the transaction.
       amount:
         type: number
         description: The amount of the transaction.
@@ -163,10 +160,3 @@ definitions:
       description:
         type: string
         description: A description of the transaction (optional)
-  TransactionsDetails:
-    type: object
-    properties:
-      transactions:
-        type: array
-        items:
-          $ref: "#/definitions/Transaction"
