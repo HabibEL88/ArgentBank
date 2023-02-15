@@ -10,157 +10,114 @@ schemes:
   - https
   - http
 paths:
-  /transaction/{userId}:
-  get:
-    security:
-      - Bearer: []
-    tags:
-      - Transactions for specified month
-    summary: An authenticated user can retrieve all transactions for a specified month
-    description: >-
-      This API allows an authenticated user to retrieve all transactions for a specified month.
-    operationId: getTransactions
+  /transactions/:
     parameters:
       - in: header
         name: Authorization
-        description: Bearer JWT token
+        description: Attach Bearer JWT token
         type: string
         required: true
-      - in: path
-        name: userId
-        required: true
-        type: integer
-        description: The ID of the authenticated user
-      - in: query
-        name: month
-        required: false
-        type: string
-        description: The month to retrieve transactions for (format: "YYYY-MM"). If not specified, the current month is used.
-    responses:
-      "200":
-        description: Successfully retrieved user's transactions for the specified month
-        content:
-          application/json:
-            schema:
-              type: array
-              items:
-                $ref: "#/definitions/Transaction"
-      "400":
-        description: Bad Request
-      "401":
-        description: Unauthorized
-      "404":
-        description: Not Found
-      "500":
-        description: Internal Server Error
-
- /user/transaction/details:
-    post:
+    get:
       security:
         - Bearer: []
       tags:
-        - Transaction Module
-      summary: User Profile API
-      description: API for fetching transaction lists for the current month by Id
+        - Transactions for specified month
+      summary: An authenticated user can retrieve all transactions for a specified month
+      description: >-
+        This API allows an authenticated user to retrieve all transactions for a specified month.
+      operationId: getTransactions
       parameters:
-        - in: header
+        - in: query
+          name: month
+          required: false
           type: string
-          name: Authorization
-          description: Attach Bearer JWT token
-          required: true
-        - in: body
-          name: body
-          description: Id details
-          required: true
-          schema:
-            $ref: "#/definitions/BodyTransactionsId"
-      produces:
-        - application/json
+          description: The month to retrieve transactions for. If not specified, the current month is used.
       responses:
         "200":
-          description: User transaction retrieved successully
+          description: Successfully retrieved user's transactions for the specified month
           schema:
-            $ref: "#/definitions/TransactionsDetails"
+            type: array
+            items:
+              $ref: "#/definitions/Transaction"
         "400":
-          description: Invalid Fields
+          description: Bad Request
+        "401":
+          description: Unauthorized
+        "404":
+          description: Not Found
         "500":
           description: Internal Server Error
 
-/transaction/{userId}/{transactionId}:
-  parameters:
-    - in: header
-      name: Authorization
-      description: Attach Bearer JWT token
-      type: string
-      required: true
-    - in: path
-      name: userId
-      required: true
-      type: integer
-      description: a specific user's id
-    - in: path
-      name: transactionId
-      required: true
-      type: integer
-      description: Transaction unique id
-  get:
-    tags:
-      - Transaction Management
-    summary: Get the details of a specific transaction.
-    operationId: getTransaction
-    responses:
-      "200":
-        description: Successfully retrieved transaction details
-        schema:
-          $ref: "#/definitions/Transaction"
-      "400":
-        description: Invalid input
-      "404":
-        description: Transaction not found
-      "500":
-        description: Internal Server Error
-  put:
-    tags:
-      - Transaction Management
-    summary: Update a specific transaction information.
-    operationId: updateTransaction
-    requestBody:
-      description: Updated transaction object
-      required: true
-      content:
-        application/json:
+  /transactions/{transactionId}:
+    parameters:
+      - in: header
+        name: Authorization
+        description: Attach Bearer JWT token
+        type: string
+        required: true
+      - in: path
+        name: transactionId
+        required: true
+        type: integer
+        description: Transaction unique id
+    get:
+      tags:
+        - Transaction Management
+      summary: Get the details of a specific transaction.
+      operationId: getTransaction
+      responses:
+        "200":
+          description: Successfully retrieved transaction details
           schema:
             $ref: "#/definitions/Transaction"
-    responses:
-      "200":
-        description: Successfully updated transaction
-        schema:
-          $ref: "#/definitions/Transaction"
-      "400":
-        description: Invalid input
-      "404":
-        description: Transaction not found
-      "500":
-        description: Internal Server Error
-  delete:
-    tags:
-      - Transaction Management
-    summary: Delete a specific transaction.
-    operationId: deleteTransaction
-    responses:
-      "200":
-        description: Successfully deleted transaction
-        schema:
-          $ref: "#/definitions/Transaction"
-      "400":
-        description: Invalid input
-      "404":
-        description: Transaction not found
-      "500":
-        description: Internal Server Error
- 
- // une seule route pour les opérations de lecture, mise à jour et suppression d'une transaction spécifique pour un utilisateur donné.
-
+        "400":
+          description: Invalid input
+        "401":
+          description: Unauthorized
+        "404":
+          description: Transaction not found
+        "500":
+          description: Internal Server Error
+    patch:
+      tags:
+        - Transaction Management
+      summary: Update a specific transaction information.
+      operationId: updateTransaction
+      parameters:
+        - name: JsonPatch
+          in: body
+          required: true
+          schema:
+            $ref: "#/definitions/TransactionUpdate"
+      responses:
+        "200":
+          description: Successfully updated transaction
+          schema:
+            $ref: "#/definitions/Transaction"
+        "400":
+          description: Invalid input
+        "401":
+          description: Unauthorized
+        "404":
+          description: Transaction not found
+        "500":
+          description: Internal Server Error
+    delete:
+      tags:
+        - Transaction Management
+      summary: Delete a specific transaction.
+      operationId: deleteTransaction
+      responses:
+        "204":
+          description: Successfully deleted transaction
+        "400":
+          description: Invalid input
+        "401":
+          description: Unauthorized
+        "404":
+          description: Transaction not found
+        "500":
+          description: Internal Server Error
 securityDefinitions:
   Bearer:
     type: apiKey
@@ -190,13 +147,22 @@ definitions:
       description:
         type: string
         description: A description of the transaction (optional)
-
-  BodyTransactionsId:
+  TransactionUpdate:
     type: object
     properties:
-      userId:
-        type: integer
-        description: The user ID associated with the transaction.
+      amount:
+        type: number
+        description: The amount of the transaction.
+      date:
+        type: string
+        format: date-time
+        description: The date and time the transaction was created.
+      type:
+        type: string
+        description: The type of the transaction (e.g., "debit", "credit")
+      description:
+        type: string
+        description: A description of the transaction (optional)
   TransactionsDetails:
     type: object
     properties:
