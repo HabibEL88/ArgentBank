@@ -3,15 +3,9 @@ import { useState, useEffect } from "react";
 
 import Axios from "axios";
 
-import { useNavigate } from "react-router-dom";
-
 import { useSelector, useDispatch } from "react-redux";
 
-import {
-  setUserFirstName,
-  setUserLastName,
-  setLogout,
-} from "../features/user/userSlice";
+import { setUserFirstName, setUserLastName } from "../features/user/userSlice";
 
 import { useForm } from "react-hook-form";
 import Account from "components/Account";
@@ -20,7 +14,6 @@ const User = () => {
   const loginInfos = useSelector((state) => state.user.loginInfos);
   const token = useSelector((state) => state.user.token);
   const dispatch = useDispatch();
-  const navigate = useNavigate();
   const [updatingName, setUpdatingName] = useState("false");
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
@@ -81,7 +74,7 @@ const User = () => {
         setLastName(response.data.body.lastName);
         dispatch(setUserLastName(response.data.body.lastName));
       })
-      .catch(function (error) {
+      .catch((error) => {
         console.error("Token incorrect.");
         console.log(error);
       });
@@ -119,7 +112,7 @@ const User = () => {
       .then((response) => {
         console.log(response);
       })
-      .catch(function (error) {
+      .catch((error) => {
         console.log(error);
       });
   };

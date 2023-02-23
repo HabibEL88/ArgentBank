@@ -147,13 +147,6 @@ definitions:
   TransactionUpdate:
     type: object
     properties:
-      amount:
-        type: number
-        description: The amount of the transaction.
-      date:
-        type: string
-        format: date-time
-        description: The date and time the transaction was created.
       type:
         type: string
         description: The type of the transaction (e.g., "debit", "credit")

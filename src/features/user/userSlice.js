@@ -1,22 +1,24 @@
-import { configureStore, createSlice, current } from "@reduxjs/toolkit";
+import { configureStore, createSlice } from "@reduxjs/toolkit";
 
 import { loadState } from "features/browser/browserStorage";
 
 const persistedState = loadState();
 
-const initialState = persistedState ? persistedState.user : {
-  loginInfos: null,
-  token: null,
-  firstName: null,
-  lastName: null,
-};
+const initialState = persistedState
+  ? persistedState.user
+  : {
+      loginInfos: null,
+      token: null,
+      firstName: null,
+      lastName: null,
+    };
 
 const initialStateMockup = {
   loginInfos: null,
   token: null,
   firstName: null,
   lastName: null,
-}
+};
 
 const userSlice = createSlice({
   name: "user",
